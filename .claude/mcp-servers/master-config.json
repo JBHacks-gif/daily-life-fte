@@ -4,7 +4,7 @@
   "created": "2026-02-12",
   "description": "Central configuration for all MCP servers in the Daily Life Productivity Digital FTE project",
   "author": "Claude Code",
-  "status": "active",
+  
   "authentication_requirements": {
     "oauth_providers": [
       "Google OAuth 2.0 (Gmail, Google Drive, Google Calendar)",
@@ -131,9 +131,9 @@
       "quota_usage"
     ],
     "alerts": {
-      "high_error_rate": 5%,
-      "high_latency": 2000ms,
-      "quota_threshold": 80%
+      "high_error_rate": "5%",
+      "high_latency": "2000ms",
+      "quota_threshold": "80%"
     },
     "reporting_interval": "5 minutes"
   },

@@ -28,13 +28,12 @@
       "source": "Daily briefing",
       "updated_at": "2026-02-12T07:05:00Z"
     }
-  ]
-}
+    ,
     {
-      "id": "task-001",
-      "title": "Initialize project structure",
-      "priority": "high",
-      "status": "completed",
+      "id": "task-004",
+      "title": "Organize CLAUDE.md notes",
+      "priority": "medium",
+      "status": "pending",
       "assigned_agent": "Personal Organizer Agent",
       "source": "CLAUDE.md",
       "updated_at": "2026-02-11T09:00:00Z"
