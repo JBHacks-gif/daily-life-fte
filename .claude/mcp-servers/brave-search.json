@@ -4,8 +4,10 @@
   "provider": "Brave",
   "authentication": {
     "type": "API Key",
-    "placeholder": "{USER_BRAVE_SEARCH_KEY}",
-    "scope": "Web search and results"
+    "credentials_path": "~/.claude/config.json",
+    "api_key": "{BRAVE_SEARCH_API_KEY}",
+    "token_storage": "~/.claude/secrets/brave_search_token.json",
+    "base_url": "https://api.brave.com/"
   },
   "capabilities": [
     "search_web",

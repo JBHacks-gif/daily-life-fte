@@ -4,8 +4,12 @@
   "provider": "Notion",
   "authentication": {
     "type": "API Key",
-    "placeholder": "{USER_NOTION_TOKEN}",
-    "scope": "Full workspace access"
+    "credentials_path": "~/.claude/config.json",
+    "api_key": "{NOTION_API_KEY}",
+    "workspace_id": "{NOTION_WORKSPACE_ID}",
+    "token_storage": "~/.claude/secrets/notion_token.json",
+    "base_url": "https://api.notion.com/v1/",
+    "version": "2024-06-01"
   },
   "capabilities": [
     "list_pages",

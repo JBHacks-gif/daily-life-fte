@@ -1,179 +1,385 @@
-# MCP Server Configuration Files
+# MCP Server Configuration Guide
 
-## What Are MCP Servers?
-MCP (Model Context Protocol) servers are external integrations that provide specific capabilities to agents and skills. They act as connectors to third-party services, allowing the Digital FTE to access real-time data and perform actions across different platforms.
+This document provides complete instructions for setting up all MCP servers required for the Daily Life Productivity Digital FTE project.
 
-## Difference Between MCP Servers and Skills
+## Overview
 
-### MCP Servers
-- **External Integrations**: Connect to third-party APIs and services
-- **Passive Connectors**: Provide data and capabilities but no logic
-- **Authentication Required**: Need API keys or OAuth tokens
-- **Rate Limited**: Subject to provider API limits
-- **Single Purpose**: Each server focuses on one external service
+The project integrates 8 external services through MCP (Model Context Protocol):
+- Gmail (Email management)
+- Google Drive (Document storage)
+- Google Calendar (Schedule management)
+- Notion (Knowledge base)
+- Slack (Notifications)
+- Brave Search (Web research)
+- Weather API (Weather data)
+- News API (Industry news)
 
-### Skills
-- **Internal Logic**: Contain the actual business logic and decision-making
-- **Persona-driven**: Each skill has a specific persona and principles
-- **Autonomous**: Can operate independently using MCP servers
-- **Multi-purpose**: Skills can use multiple MCP servers
-- **Reusable**: Can be called by different agents
+## Quick Setup Steps
 
-## How Authentication Is Handled Securely
+### 1. Initial Configuration
+```bash
+# Navigate to MCP servers directory
+cd .claude/mcp-servers/
 
-### Security Principles
-1. **No Credentials in Repository**: All authentication placeholders only
-2. **User-Level Configuration**: Credentials stored in ~/.claude/config.json
-3. **Least Privilege Access**: Minimal permissions required per server
-4. **Environment Isolation**: Development vs production credentials separated
-5. **Regular Rotation**: API keys should be rotated periodically
+# Make setup script executable
+chmod +x setup.sh
 
-### Authentication Types
-- **OAuth2**: For services requiring user consent (Gmail, Google Calendar)
-- **API Keys**: For direct API access (Notion, Brave Search, Weather)
-- **Bot Tokens**: For service-to-service communication (Slack)
-
-## How Skills Consume MCP Capabilities
-
-### Skill-MCP Interaction Pattern
-1. **Capability Declaration**: Skills declare required MCP capabilities
-2. **Server Connection**: MCP servers establish connections using credentials
-3. **Data Request**: Skills make requests through MCP servers
-4. **Response Handling**: Skills process responses and apply logic
-5. **Error Management**: Skills handle errors using server-defined patterns
-
-### Example Flow
-```
-Skill: Email Manager
-├── Needs: list_emails, read_email, draft_email
-└── Uses: gmail MCP server
-    ├── Connects using OAuth2 credentials
-    ├── Requests email list
-    ├── Filters important emails
-    └── Drafts responses using Email Manager logic
+# Run setup script
+./setup.sh
 ```
 
-## Best Practices for Adding New Integrations
+### 2. API Key Configuration
+Edit the main configuration file:
+```bash
+nano ../config.json
+```
 
-### 1. Security First
-- Never commit real credentials
-- Use environment variables for sensitive data
-- Implement proper error handling for authentication failures
-- Document permission scopes clearly
+### 3. Service Setup
+Follow the detailed setup instructions for each service below.
 
-### 2. Rate Limit Awareness
-- Respect provider rate limits
-- Implement exponential backoff for retries
-- Cache data when appropriate
-- Monitor usage patterns
+---
 
-### 3. Error Handling
-- Define clear error handling strategies
-- Implement retry logic with appropriate delays
-- Provide meaningful error messages
-- Handle network failures gracefully
+## Detailed Service Setup
 
-### 4. Data Privacy
-- Only request necessary data
-- Implement data retention policies
-- Secure data transmission (HTTPS)
-- Comply with relevant regulations (GDPR, etc.)
+### 1. Google Services (Gmail, Drive, Calendar)
 
-### 5. Testing Strategy
-- Test with sandbox/development credentials
-- Implement proper logging for debugging
-- Validate data formats and structures
-- Monitor performance and reliability
+#### Prerequisites
+- Google Cloud Console account
+- Project created in Google Cloud
 
-## MCP Server Categories
+#### Setup Steps
 
-### Communication Servers
-- **gmail.json**: Email management
-- **slack.json**: Notifications and messaging
+**1. Enable APIs**
+- Go to [Google Cloud Console](https://console.cloud.google.com/)
+- Select your project
+- Enable these APIs:
+  - Gmail API
+  - Google Drive API
+  - Google Calendar API
 
-### Storage Servers
-- **google-drive.json**: File storage and management
-- **notion.json**: Knowledge base and task tracking
+**2. Create OAuth 2.0 Credentials**
+- Go to "APIs & Services" → "Credentials"
+- Click "Create Credentials" → "OAuth 2.0 Client ID"
+- Select "Web application"
+- Add Authorized redirect URIs: `http://localhost:3000/oauth2callback`
+- Download the credentials.json file
 
-### Calendar & Scheduling
-- **google-calendar.json**: Event management
+**3. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "google": {
+    "client_id": "YOUR_CLIENT_ID.apps.googleusercontent.com",
+    "client_secret": "YOUR_CLIENT_SECRET",
+    "redirect_uri": "http://localhost:3000/oauth2callback"
+  }
+}
+```
 
-### Research & Information
-- **brave-search.json**: Web search and fact-checking
-- **news-api.json**: News aggregation
-- **weather.json**: Weather data
+**4. Complete OAuth Flow**
+```bash
+python3 -m google_auth_oauthlib.flow --config ../config.json
+```
 
-## Integration Dependencies
+#### Required Scopes
+- Gmail: `https://mail.google.com/`, `https://www.googleapis.com/auth/gmail.modify`
+- Drive: `https://www.googleapis.com/auth/drive.file`, `https://www.googleapis.com/auth/drive.readonly`
+- Calendar: `https://www.googleapis.com/auth/calendar`, `https://www.googleapis.com/auth/calendar.events`
 
-### Agent-MCP Relationships
-- **Content Creator Agent**: Uses gmail, google-drive, slack
-- **Learning Assistant Agent**: Uses google-drive, notion, brave-search
-- **Health Coach Agent**: Uses weather, google-drive
-- **Finance Manager Agent**: Uses google-drive, slack
-- **Personal Organizer Agent**: Uses google-calendar, notion, slack
+---
 
-### Skill-MCP Relationships
-- **Email Manager**: gmail, slack
-- **Content Creator**: google-drive, slack
-- **Meeting Scheduler**: google-calendar, slack
-- **Task Prioritizer**: notion, google-calendar
-- **Learning Curator**: brave-search, notion
-- **Note Organizer**: notion, google-drive
-- **Health Tracker**: weather, google-drive
-- **Finance Monitor**: google-drive, slack
-- **News Aggregator**: news-api, brave-search
-- **Research Assistant**: brave-search, news-api
-- **Travel Planner**: weather, google-drive
-- **Gift Recommender**: google-drive, slack
-- **Recipe Finder**: google-drive, slack
-- **Habit Tracker**: google-drive, slack
-- **Weekly Reviewer**: google-drive, notion, slack
+### 2. Notion Integration
 
-## Configuration Management
+#### Prerequisites
+- Notion account
+- Notion workspace
 
-### File Organization
-- All MCP configurations in `.claude/mcp-servers/`
-- Each server has its own JSON file
-- Configuration follows standardized structure
-- README.md documents system architecture
+#### Setup Steps
 
-### Environment Variables
-Credentials should be stored in environment variables:
-- `CLAUDE_GMAIL_CREDENTIALS`
-- `CLAUDE_DRIVE_CREDENTIALS`
-- `CLAUDE_CALENDAR_CREDENTIALS`
-- `CLAUDE_NOTION_TOKEN`
-- `CLAUDE_SLACK_BOT_TOKEN`
-- `CLAUDE_BRAVE_SEARCH_KEY`
-- `CLAUDE_WEATHER_API_KEY`
-- `CLAUDE_NEWS_API_KEY`
+**1. Create Integration**
+- Go to [Notion Integrations](https://www.notion.so/my-integrations)
+- Click "+ New integration"
+- Give it a name (e.g., "Daily Life FTE")
+- Select your workspace
+- Click "Submit"
 
-## Monitoring and Maintenance
+**2. Copy API Key**
+- Copy the Internal Integration Token
+- Share the integration with your workspace
 
-### Health Checks
-- Validate MCP server connectivity
-- Monitor authentication token validity
-- Track API usage against rate limits
-- Log errors and performance metrics
+**3. Get Workspace ID**
+- In Notion, right-click any page in your workspace
+- Copy the link
+- The workspace ID is the part after `https://www.notion.so/`
 
-### Update Procedures
-- Test new API versions in staging
-- Update authentication methods as needed
-- Monitor for deprecation warnings
-- Maintain backward compatibility
+**4. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "notion": {
+    "api_key": "YOUR_NOTION_API_KEY",
+    "workspace_id": "YOUR_WORKSPACE_ID"
+  }
+}
+```
 
-## Compliance and Governance
+---
 
-### Data Protection
-- Implement data encryption where required
-- Maintain audit logs for sensitive operations
-- Ensure compliance with data protection regulations
-- Regular security assessments
+### 3. Slack Integration
 
-### Access Control
-- Principle of least privilege
-- Regular access reviews
-- Secure credential storage
-- Multi-factor authentication where available
+#### Prerequisites
+- Slack workspace
+- Admin or app management permissions
 
-This MCP server configuration system provides a secure, scalable foundation for the Digital FTE to integrate with external services while maintaining proper security and operational standards.
+#### Setup Steps
+
+**1. Create Slack App**
+- Go to [Slack API](https://api.slack.com/apps)
+- Click "Create New App"
+- Select "From scratch"
+- Give it a name (e.g., "Daily Life FTE")
+- Select your workspace
+
+**2. Configure Bot Token Scopes**
+- Go to "OAuth & Permissions"
+- Add these scopes under "Bot Token Scopes":
+  - `chat:write`
+  - `chat:read`
+  - `users:read`
+
+**3. Install App**
+- Click "Install to Workspace"
+- Approve permissions
+- Copy the Bot User OAuth Token
+
+**4. Get Verification Token**
+- In the same OAuth & Permissions page
+- Copy the "Verification Token"
+
+**5. Get Signing Secret**
+- Go to "Basic Information"
+- Under "App Credentials", copy the "Signing Secret"
+
+**6. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "slack": {
+    "bot_token": "xoxb-YOUR_BOT_TOKEN",
+    "verification_token": "YOUR_VERIFICATION_TOKEN",
+    "signing_secret": "YOUR_SIGNING_SECRET"
+  }
+}
+```
+
+---
+
+### 4. Brave Search Integration
+
+#### Prerequisites
+- Brave Search API account
+
+#### Setup Steps
+
+**1. Sign Up**
+- Go to [Brave Search API](https://api.brave.com/)
+- Sign up for API access
+- Choose appropriate plan
+
+**2. Get API Key**
+- Copy your API key from the dashboard
+
+**3. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "brave_search": {
+    "api_key": "YOUR_BRAVE_SEARCH_API_KEY"
+  }
+}
+```
+
+---
+
+### 5. Weather API Integration
+
+#### Prerequisites
+- OpenWeatherMap account
+
+#### Setup Steps
+
+**1. Sign Up**
+- Go to [OpenWeatherMap](https://openweathermap.org/)
+- Create a free account
+- Choose appropriate plan (Free tier supports 1000 calls/day)
+
+**2. Get API Key**
+- Copy your API key from the dashboard
+
+**3. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "weather": {
+    "api_key": "YOUR_OPENWEATHERMAP_API_KEY"
+  }
+}
+```
+
+---
+
+### 6. News API Integration
+
+#### Prerequisites
+- NewsAPI.org account
+
+#### Setup Steps
+
+**1. Sign Up**
+- Go to [NewsAPI.org](https://newsapi.org/)
+- Create a free account
+- Choose appropriate plan (Free tier supports 500 calls/day)
+
+**2. Get API Key**
+- Copy your API key from the dashboard
+
+**3. Update Configuration**
+Edit `../config.json`:
+```json
+{
+  "news_api": {
+    "api_key": "YOUR_NEWS_API_KEY"
+  }
+}
+```
+
+---
+
+## Testing MCP Connections
+
+After configuration, test each MCP server:
+
+```bash
+# Test individual connections
+claude mcp test gmail
+claude mcp test google-drive
+claude mcp test google-calendar
+claude mcp test notion
+claude mcp test slack
+claude mcp test brave-search
+claude mcp test weather
+claude mcp test news-api
+
+# Test all connections
+claude mcp test all
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**1. Authentication Errors**
+- Check that API keys are correctly entered
+- Verify scopes are properly configured
+- Ensure OAuth tokens are valid
+
+**2. Rate Limit Errors**
+- Check API usage limits
+- Implement proper backoff strategies
+- Consider upgrading to higher-tier plans if needed
+
+**3. Network Errors**
+- Verify internet connectivity
+- Check firewall settings
+- Ensure correct base URLs
+
+**4. Permission Errors**
+- Verify OAuth scopes
+- Check workspace permissions (Notion/Slack)
+- Ensure proper admin access
+
+### Debug Mode
+Enable debug logging to troubleshoot issues:
+
+```bash
+export DEBUG=mcp:*
+claude mcp test gmail
+```
+
+### Logs Location
+MCP logs are stored in:
+```
+~/.claude/logs/mcp/
+```
+
+## Security Best Practices
+
+1. **Never commit API keys** - Use environment variables or secret managers
+2. **Use least privilege** - Only enable necessary scopes
+3. **Regular rotation** - Rotate API keys periodically
+4. **Audit access** - Regularly review who has access
+5. **Monitor usage** - Track API usage and set up alerts
+
+## Configuration File Structure
+
+The main configuration file (`../config.json`) contains all credentials:
+
+```json
+{
+  "google": {
+    "client_id": "",
+    "client_secret": "",
+    "redirect_uri": ""
+  },
+  "notion": {
+    "api_key": "",
+    "workspace_id": ""
+  },
+  "slack": {
+    "bot_token": "",
+    "verification_token": "",
+    "signing_secret": ""
+  },
+  "brave_search": {
+    "api_key": ""
+  },
+  "weather": {
+    "api_key": ""
+  },
+  "news_api": {
+    "api_key": ""
+  }
+}
+```
+
+## File Organization
+
+All MCP configurations are stored in:
+```
+.claude/mcp-servers/
+├── gmail.json
+├── google-drive.json
+├── google-calendar.json
+├── notion.json
+├── slack.json
+├── brave-search.json
+├── weather.json
+├── news-api.json
+├── setup.sh
+├── README.md
+└── master-config.json
+```
+
+## Next Steps
+
+1. Complete the setup steps for each service
+2. Test all MCP connections
+3. Verify data flow between services
+4. Set up monitoring and alerts
+5. Document any custom configurations
+
+---
+
+**Last Updated**: 2026-02-12
+**Version**: 1.0
+**Project**: Daily Life Productivity Digital FTE

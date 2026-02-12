@@ -4,8 +4,11 @@
   "provider": "Slack",
   "authentication": {
     "type": "Bot Token",
-    "placeholder": "{USER_SLACK_BOT_TOKEN}",
-    "scope": "chat:write chat:read users:read"
+    "credentials_path": "~/.claude/config.json",
+    "bot_token": "{SLACK_BOT_TOKEN}",
+    "token_storage": "~/.claude/secrets/slack_token.json",
+    "verification_token": "{SLACK_VERIFICATION_TOKEN}",
+    "signing_secret": "{SLACK_SIGNING_SECRET}"
   },
   "capabilities": [
     "send_message",

@@ -4,8 +4,16 @@
   "provider": "OpenWeatherMap",
   "authentication": {
     "type": "API Key",
-    "placeholder": "{USER_WEATHER_API_KEY}",
-    "scope": "Current weather and forecasts"
+    "credentials_path": "~/.claude/config.json",
+    "api_key": "{WEATHER_API_KEY}",
+    "token_storage": "~/.claude/secrets/weather_token.json",
+    "base_url": "https://api.openweathermap.org/data/2.5/",
+    "default_location": {
+      "lat": "24.7136",
+      "lon": "46.6753",
+      "city": "Riyadh",
+      "country": "SA"
+    }
   },
   "capabilities": [
     "get_current_weather",
